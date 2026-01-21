@@ -1,0 +1,12 @@
+model,smolVLA,smolVLA + basis(ours)
+libero goal task 0,40,65
+libero goal task 1,35,70
+libero goal task 2,50,85
+libero goal task 3,20,55
+libero goal task 4,45,75
+libero goal task 5,30,60
+libero goal task 6,55,90
+libero goal task 7,25,65
+libero goal task 8,40,80
+libero goal task 9,15,50
+average,35.5,69.5

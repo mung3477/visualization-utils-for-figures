@@ -1,0 +1,12 @@
+model,smolVLA,smolVLA + basis(ours)
+libero long task 0,10,45
+libero long task 1,15,50
+libero long task 2,5,35
+libero long task 3,20,60
+libero long task 4,12,48
+libero long task 5,8,42
+libero long task 6,18,55
+libero long task 7,5,30
+libero long task 8,22,65
+libero long task 9,10,40
+average,12.5,47.0

@@ -1,0 +1,5 @@
+model,DP,DP + basis(ours)
+seed 7,80,88
+seed 8,72,92
+seed 9,72,84
+average,74.66666667,88

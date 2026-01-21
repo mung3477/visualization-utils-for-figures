@@ -1,0 +1,12 @@
+model,smolVLA,smolVLA + basis(ours)
+libero spatial task 0,30,65
+libero spatial task 1,45,80
+libero spatial task 2,20,55
+libero spatial task 3,55,90
+libero spatial task 4,40,75
+libero spatial task 5,35,68
+libero spatial task 6,60,92
+libero spatial task 7,25,60
+libero spatial task 8,50,85
+libero spatial task 9,40,70
+average,40.0,74.0

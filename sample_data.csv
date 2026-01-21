@@ -1,4 +1,0 @@
-Dataset,LLaVA-1.5,LLaVA-1.5 + Truth_LLM,LLaVA-1.5 + Random Gate
-MSCOCO,75.2,76.8,75.9
-A-OKVQA,68.1,69.7,68.8
-GQA,82.3,83.9,82.8
