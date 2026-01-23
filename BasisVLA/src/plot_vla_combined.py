@@ -121,7 +121,8 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
             color = COLOR_MAP_MODEL.get(model.lower(), '#4D4D4D')
 
-            bar = ax.bar(pos, avgs[j], bar_width, color=color, zorder=3, alpha=0.9, label=model)
+            # line 124: Adding a border to the bars using edgecolor and linewidth
+            bar = ax.bar(pos, avgs[j], bar_width, color=color, edgecolor='black', linewidth=1.2, zorder=3, alpha=0.9, label=model)
             # ax.errorbar(pos, avgs[j], yerr=stds[j], fmt='none', ecolor=COLOR_EMPH, capsize=4, zorder=4)
 
             val_text = f'{avgs[j]:.1f}'
@@ -148,19 +149,36 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         ax.set_xticks([])
         # line 147: Enlarged task name font to 14
         ax.set_xlabel(format_name(name), fontsize=14, labelpad=15, fontweight='medium')
-        # line 148: Restricting scale to 100 while keeping margin for annotations
-        ax.set_ylim(0, 115)
-        ax.set_yticks([0, 20, 40, 60, 80, 100])
-        # line 150: Enforcing a wider fixed horizontal range to give labels more room
+
+        # line 151-155: Independent Y-axis limits for each group
+        is_single_group = (i < n_single)
+        if is_single_group:
+            # Single-Task Limit (0-115 to show up to 100 with margin)
+            ax.set_ylim(50, 115)
+            ax.set_yticks([60, 80, 100])
+            ax.set_yticklabels(['60', '80', '100'])
+        else:
+            # Multi-Task Limit (Can be different, e.g., 0-100 to show up to 80/90)
+            # Adjusting here to 0-105 as an example of group-specific limits
+            ax.set_ylim(0, 105)
+            ax.set_yticks([0, 20, 40, 60, 80, 100])
+
+        # line 164: Enforcing a wider fixed horizontal range
         ax.set_xlim(-0.7, 0.7)
-        if i > 0:
-            # line 152: Removing Y-axis labels, tick marks, and left spine for non-leftmost plots
+
+        # line 166-174: Showing Y-axis scale for the start of EACH group
+        is_group_head = (i == 0 or i == n_single)
+        if not is_group_head:
+            # Hide Y-axis for interior plots
             ax.set_yticklabels([])
             ax.tick_params(axis='y', which='both', left=False)
             ax.spines['left'].set_visible(False)
         else:
-            # line 154: Enlarged Y-axis label to 18
-            ax.set_ylabel('Success Rate (%)', fontsize=18, fontweight='bold')
+            # Show Y-axis and label for group heads
+            if i == 0:
+                ax.set_ylabel('Success Rate (%)', fontsize=18, fontweight='bold')
+            ax.tick_params(axis='y', which='both', left=True)
+            ax.spines['left'].set_visible(True)
 
         ax.yaxis.grid(True, linestyle='--', color='gray', alpha=0.2, zorder=0)
         ax.spines['top'].set_visible(False)
@@ -176,22 +194,22 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
     # lines 170-172: Group captions
     # lines 175-176: Enlarged group captions to 18
-    fig.text((s_start + s_end)/2, 0.19, 'Single-Task Evaluation', ha='center', fontsize=18, color=COLOR_GROUP_CAPTION)
-    fig.text((m_start + m_end)/2, 0.19, 'Multi-Task Evaluation (LIBERO)', ha='center', fontsize=18, color=COLOR_GROUP_CAPTION)
+    fig.text((s_start + s_end)/2, 0.19, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((m_start + m_end)/2, 0.19, 'Multi-Task Evaluation (LIBERO)', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
 
     # lines 178-181: Brackets with curly (tick) ends
     line_y = 0.23
     tick_h = 0.01  # Height of the ends
 
     # Single-Task Bracket
-    fig.add_artist(plt.Line2D([s_start, s_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
-    fig.add_artist(plt.Line2D([s_start, s_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
-    fig.add_artist(plt.Line2D([s_end, s_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
+    fig.add_artist(plt.Line2D([s_start, s_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([s_start, s_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([s_end, s_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
 
     # Multi-Task Bracket
-    fig.add_artist(plt.Line2D([m_start, m_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
-    fig.add_artist(plt.Line2D([m_start, m_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
-    fig.add_artist(plt.Line2D([m_end, m_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1))
+    fig.add_artist(plt.Line2D([m_start, m_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([m_start, m_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([m_end, m_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
 
     # 4. Split Legends
     # line 195, 200: Positioning split legends slightly upward with larger font (14)
