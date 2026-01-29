@@ -1,4 +1,4 @@
-model,DP,DP + basis(ours)
+model,Diffusion Policy,Diffusion Policy + AxisGuide (Ours)
 seed 7,80,88
 seed 8,72,92
 seed 9,72,84

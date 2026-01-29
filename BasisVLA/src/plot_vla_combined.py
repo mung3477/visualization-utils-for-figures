@@ -63,8 +63,13 @@ def parse_multi_task_csv(file_path):
 def format_name(name):
     """Formats task/dataset names for display."""
     name = name.replace('_', ' ').replace('-', ' ')
+    if 'LIBERO' in name:
+        name = name.replace('LIBERO', '')
+        prefix = "LIBERO"
+    else:
+        prefix = ""
     # line 66: Increasing wrap width to 20 to use more horizontal space
-    return "\n".join(textwrap.wrap(name.title(), width=20))
+    return "\n".join(textwrap.wrap(prefix + name.title(), width=20))
 
 def create_combined_plot(single_task_files, multi_task_files, output_path):
     # line 70: Setting the global font to Times New Roman
@@ -95,9 +100,6 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
     all_labels = []
     seen_labels = set()
 
-    # line 98: Set a balanced bar width (skinny but readable)
-    bar_width = 0.45
-
     single_handles = []
     single_labels = []
     multi_handles = []
@@ -109,8 +111,10 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         is_single = (i < n_single)
         if is_single:
             name, models, avgs, stds = single_data[i]
+            bar_width = 0.42
         else:
             name, models, avgs, stds = multi_data[i - n_single]
+            bar_width = 0.33
 
         x = np.arange(1)
 
@@ -121,19 +125,20 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
             color = COLOR_MAP_MODEL.get(model.lower(), '#4D4D4D')
 
+            # line 98: Set a balanced bar width (skinny but readable)
             # line 124: Adding a border to the bars using edgecolor and linewidth
-            bar = ax.bar(pos, avgs[j], bar_width, color=color, edgecolor='black', linewidth=1.2, zorder=3, alpha=0.9, label=model)
+            bar = ax.bar(pos, avgs[j], bar_width, color=color, edgecolor="black", linewidth=0.75, zorder=3, alpha=0.9, label=model)
             # ax.errorbar(pos, avgs[j], yerr=stds[j], fmt='none', ecolor=COLOR_EMPH, capsize=4, zorder=4)
 
             val_text = f'{avgs[j]:.1f}'
             if 'ours' in model.lower() and j > 0:
                 advantage = avgs[j] - avgs[0]
                 # line 128: Improvement metric in COLOR_EMPH (enlarged to 12)
-                ax.text(pos, avgs[j] + 6, f'(+{advantage:.1f})', ha='center', va='bottom',
-                        fontsize=12, fontweight='bold', color=COLOR_EMPH)
+                # ax.text(pos, avgs[j] + 6, f'(+{advantage:.1f})', ha='center', va='bottom',
+                #         fontsize=12, fontweight='bold', color=COLOR_EMPH)
 
             # line 131: Success rate label (enlarged to 14)
-            ax.text(pos, avgs[j] + 1, val_text, ha='center', va='bottom', fontsize=14)
+            ax.text(pos, avgs[j] + 0.5, val_text, ha='center', va='bottom', fontsize=14)
 
             # line 135-144: Splitting legend collectors by group
             if is_single:
@@ -154,14 +159,14 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         is_single_group = (i < n_single)
         if is_single_group:
             # Single-Task Limit (0-115 to show up to 100 with margin)
-            ax.set_ylim(50, 115)
+            ax.set_ylim(60, 115)
             ax.set_yticks([60, 80, 100])
             ax.set_yticklabels(['60', '80', '100'])
         else:
             # Multi-Task Limit (Can be different, e.g., 0-100 to show up to 80/90)
             # Adjusting here to 0-105 as an example of group-specific limits
-            ax.set_ylim(0, 105)
-            ax.set_yticks([0, 20, 40, 60, 80, 100])
+            ax.set_ylim(40, 105)
+            ax.set_yticks([40, 60, 80, 100])
 
         # line 164: Enforcing a wider fixed horizontal range
         ax.set_xlim(-0.7, 0.7)
@@ -185,7 +190,7 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         ax.spines['right'].set_visible(False)
 
     # 3. Group Captions and Dividers
-    fig.subplots_adjust(bottom=0.3) # Increase bottom space for legends
+    fig.subplots_adjust(bottom=0.25) # Increase bottom space for legends
 
     s_start = axes[0].get_position().x0
     s_end = axes[n_single-1].get_position().x1
@@ -194,31 +199,31 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
     # lines 170-172: Group captions
     # lines 175-176: Enlarged group captions to 18
-    fig.text((s_start + s_end)/2, 0.19, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
-    fig.text((m_start + m_end)/2, 0.19, 'Multi-Task Evaluation (LIBERO)', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((s_start + s_end)/2, 0.125, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((m_start + m_end)/2, 0.125, 'Multi-Task Evaluation (LIBERO)', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
 
     # lines 178-181: Brackets with curly (tick) ends
-    line_y = 0.23
+    line_y = 0.16
     tick_h = 0.01  # Height of the ends
 
     # Single-Task Bracket
-    fig.add_artist(plt.Line2D([s_start, s_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
-    fig.add_artist(plt.Line2D([s_start, s_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
-    fig.add_artist(plt.Line2D([s_end, s_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([s_start, s_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
+    fig.add_artist(plt.Line2D([s_start, s_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
+    fig.add_artist(plt.Line2D([s_end, s_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
 
     # Multi-Task Bracket
-    fig.add_artist(plt.Line2D([m_start, m_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
-    fig.add_artist(plt.Line2D([m_start, m_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
-    fig.add_artist(plt.Line2D([m_end, m_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=2))
+    fig.add_artist(plt.Line2D([m_start, m_end], [line_y, line_y], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
+    fig.add_artist(plt.Line2D([m_start, m_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
+    fig.add_artist(plt.Line2D([m_end, m_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
 
     # 4. Split Legends
-    # line 195, 200: Positioning split legends slightly upward with larger font (14)
-    fig.legend(single_handles, single_labels, loc='lower center',
-               bbox_to_anchor=((s_start + s_end)/2, 0.10), ncol=len(single_labels),
+    # line 195, 200: Positioning split legends at the top right of each group area
+    fig.legend(single_handles, single_labels, loc='upper right',
+               bbox_to_anchor=(s_end, 0.88), ncol=1,
                frameon=True, fontsize=14, edgecolor='#CCCCCC')
 
-    fig.legend(multi_handles, multi_labels, loc='lower center',
-               bbox_to_anchor=((m_start + m_end)/2, 0.10), ncol=len(multi_labels),
+    fig.legend(multi_handles, multi_labels, loc='upper right',
+               bbox_to_anchor=(m_end, 0.88), ncol=1,
                frameon=True, fontsize=14, edgecolor='#CCCCCC')
 
     # line 202: Enlarged title to 28

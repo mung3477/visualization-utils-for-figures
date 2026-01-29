@@ -1,0 +1,5 @@
+model,Diffusion Policy,Diffusion Policy + AxisGuide (Ours)
+seed 7,76,80
+seed 8,76,90
+seed 9,72,76
+average,74.66666667,78.66666667

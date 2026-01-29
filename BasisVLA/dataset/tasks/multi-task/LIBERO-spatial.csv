@@ -1,12 +1,12 @@
-model,smolVLA,smolVLA + basis(ours)
-libero spatial task 0,30,65
-libero spatial task 1,45,80
-libero spatial task 2,20,55
-libero spatial task 3,55,90
-libero spatial task 4,40,75
-libero spatial task 5,35,68
-libero spatial task 6,60,92
-libero spatial task 7,25,60
-libero spatial task 8,50,85
-libero spatial task 9,40,70
-average,40.0,74.0
+model,SmolVLA (Action Expert),SmolVLA (Full Trained),SmolVLA + AxisGuide (Ours)
+libero task 0,57.5,90,90
+libero task 1,57.5,85,60
+libero task 2,57.5,100,95
+libero task 3,57.5,95,80
+libero task 4,57.5,25,40
+libero task 5,57.5,20,25
+libero task 6,57.5,95,75
+libero task 7,57.5,75,85
+libero task 8,57.5,45,45
+libero task 9,57.5,35,90
+average,57.5,66.5,68.5

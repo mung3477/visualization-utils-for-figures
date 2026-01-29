@@ -1,12 +1,12 @@
-model,smolVLA,smolVLA + basis(ours)
-libero long task 0,10,45
-libero long task 1,15,50
-libero long task 2,5,35
-libero long task 3,20,60
-libero long task 4,12,48
-libero long task 5,8,42
-libero long task 6,18,55
-libero long task 7,5,30
-libero long task 8,22,65
-libero long task 9,10,40
-average,12.5,47.0
+model,SmolVLA (Action Expert),SmolVLA (Full Trained),SmolVLA + AxisGuide (Ours)
+libero long task 0,51,40,45
+libero long task 1,51,50,65
+libero long task 2,51,85,85
+libero long task 3,51,85,80
+libero long task 4,51,50,45
+libero long task 5,51,90,80
+libero long task 6,51,40,60
+libero long task 7,51,75,55
+libero long task 8,51,60,65
+libero long task 9,51,80,95
+average,51,65.5,67.5

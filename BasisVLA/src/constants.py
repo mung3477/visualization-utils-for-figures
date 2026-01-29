@@ -1,10 +1,12 @@
 COLOR_EMPH="#ee5b00"
 
 COLOR_MAP_MODEL = {
-    'dp': '#FD7679',
-    'dp + basis(ours)': '#6BD965',
-    'smolvla': '#FFBB77',
-    'smolvla + basis(ours)': '#56A1B3'
+    'diffusion policy': '#fde1d5',
+    'diffusion policy + axisguide (ours)': '#f58556',
+    'smolvla': '#84A98C',
+    'smolvla + axisguide (ours)': '#3b7d22',
+    'smolvla (action expert)': '#d8e5d3',
+    'smolvla (full trained)': '#89b17a'
 }
 
-COLOR_GROUP_CAPTION = '#999999'
+COLOR_GROUP_CAPTION = '#000000BF'
