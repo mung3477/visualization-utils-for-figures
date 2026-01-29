@@ -1,4 +1,4 @@
-model,Diffusion Policy,Diffusion Policy + AxisGuide (Ours)
+model,DP,DP + Ours
 seed 7,100,100
 seed 8,100,100
 seed 9,100,100

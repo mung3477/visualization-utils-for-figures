@@ -2,9 +2,11 @@ COLOR_EMPH="#ee5b00"
 
 COLOR_MAP_MODEL = {
     'diffusion policy': '#fde1d5',
-    'diffusion policy + axisguide (ours)': '#f58556',
-    'smolvla': '#84A98C',
-    'smolvla + axisguide (ours)': '#3b7d22',
+    'diffusion policy + ours': '#f58556',
+    'dp': '#fde1d5',
+    'dp + ours': '#f58556',
+    'smolvla': '#d8e5d3',
+    'smolvla + ours': '#3b7d22',
     'smolvla (action expert)': '#d8e5d3',
     'smolvla (full trained)': '#89b17a'
 }

@@ -1,4 +1,4 @@
-model,SmolVLA (Action Expert),SmolVLA (Full Trained),SmolVLA + AxisGuide (Ours)
+model,SmolVLA (Action Expert),SmolVLA (Full Trained),SmolVLA + Ours
 libero goal task 0,78.5,100,90
 libero goal task 1,78.5,95,100
 libero goal task 2,78.5,75,85

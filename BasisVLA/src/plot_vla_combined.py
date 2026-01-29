@@ -92,7 +92,7 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
     total_plots = n_single + n_multi
 
     # 2. Setup Figure
-    fig = plt.figure(figsize=(max(15, total_plots * 2.75), 8))
+    fig = plt.figure(figsize=(max(15, total_plots * 2.75), 7))
     gs = GridSpec(1, total_plots, figure=fig, wspace=0.15)
     axes = [fig.add_subplot(gs[0, i]) for i in range(total_plots)]
 
@@ -158,14 +158,13 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         # line 151-155: Independent Y-axis limits for each group
         is_single_group = (i < n_single)
         if is_single_group:
-            # Single-Task Limit (0-115 to show up to 100 with margin)
-            ax.set_ylim(60, 115)
+            # Single-Task Limit (60-108 to keep it tight)
+            ax.set_ylim(60, 108)
             ax.set_yticks([60, 80, 100])
             ax.set_yticklabels(['60', '80', '100'])
         else:
-            # Multi-Task Limit (Can be different, e.g., 0-100 to show up to 80/90)
-            # Adjusting here to 0-105 as an example of group-specific limits
-            ax.set_ylim(40, 105)
+            # Multi-Task Limit (40-102 to keep it tight)
+            ax.set_ylim(40, 102)
             ax.set_yticks([40, 60, 80, 100])
 
         # line 164: Enforcing a wider fixed horizontal range
@@ -199,11 +198,11 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
     # lines 170-172: Group captions
     # lines 175-176: Enlarged group captions to 18
-    fig.text((s_start + s_end)/2, 0.125, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
-    fig.text((m_start + m_end)/2, 0.125, 'Multi-Task Evaluation (LIBERO)', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((s_start + s_end)/2, 0.12, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((m_start + m_end)/2, 0.12, 'Multi-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
 
     # lines 178-181: Brackets with curly (tick) ends
-    line_y = 0.16
+    line_y = 0.155
     tick_h = 0.01  # Height of the ends
 
     # Single-Task Bracket
@@ -216,20 +215,23 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
     fig.add_artist(plt.Line2D([m_start, m_start], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
     fig.add_artist(plt.Line2D([m_end, m_end], [line_y, line_y + tick_h], transform=fig.transFigure, color=COLOR_GROUP_CAPTION, lw=1.5))
 
-    # 4. Split Legends
-    # line 195, 200: Positioning split legends at the top right of each group area
-    fig.legend(single_handles, single_labels, loc='upper right',
-               bbox_to_anchor=(s_end, 0.88), ncol=1,
-               frameon=True, fontsize=14, edgecolor='#CCCCCC')
+    # 4. Split Horizontal Legends at Bottom
+    # Single-Task Legend
+    fig.legend(single_handles, single_labels, loc='lower center',
+               bbox_to_anchor=((s_start + s_end)/2, 0.03), ncol=len(single_labels),
+               frameon=True, fontsize=16, edgecolor='#CCCCCC',
+               handlelength=0.7, handleheight=0.7)
 
-    fig.legend(multi_handles, multi_labels, loc='upper right',
-               bbox_to_anchor=(m_end, 0.88), ncol=1,
-               frameon=True, fontsize=14, edgecolor='#CCCCCC')
+    # Multi-Task Legend
+    fig.legend(multi_handles, multi_labels, loc='lower center',
+               bbox_to_anchor=((m_start + m_end)/2, 0.03), ncol=len(multi_labels),
+               frameon=True, fontsize=16, edgecolor='#CCCCCC',
+               handlelength=0.7, handleheight=0.7)
 
     # line 202: Enlarged title to 28
     # plt.suptitle('Performance Advantage of Visual Basis in Robotics Policies', fontsize=28, fontweight='bold', y=0.95)
 
-    plt.savefig(output_path, dpi=300, bbox_inches='tight')
+    plt.savefig(output_path, dpi=300, bbox_inches='tight', pad_inches=0)
     print(f"Combined plot with advantage metrics saved to {output_path}")
 
 if __name__ == "__main__":
