@@ -1,0 +1,3 @@
+environment,baseline_name,baseline,ours
+Real-world,DP,30.12,50.00
+Simulation,SmolVLA,37.14,58.57
