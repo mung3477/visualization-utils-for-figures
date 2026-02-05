@@ -92,8 +92,8 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
     total_plots = n_single + n_multi
 
     # 2. Setup Figure
-    fig = plt.figure(figsize=(max(15, total_plots * 2.75), 7))
-    gs = GridSpec(1, total_plots, figure=fig, wspace=0.15)
+    fig = plt.figure(figsize=(max(15, total_plots * 2.75), 5.5))
+    gs = GridSpec(1, total_plots, figure=fig, wspace=0.30)
     axes = [fig.add_subplot(gs[0, i]) for i in range(total_plots)]
 
     all_handles = []
@@ -134,10 +134,10 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
             if 'ours' in model.lower() and j > 0:
                 advantage = avgs[j] - avgs[0]
                 # line 128: Improvement metric in COLOR_EMPH (enlarged to 12)
-                # ax.text(pos, avgs[j] + 6, f'(+{advantage:.1f})', ha='center', va='bottom',
+                # ax.text(pos, avgs[j] + 3, f'(+{advantage:.1f})', ha='center', va='bottom',
                 #         fontsize=12, fontweight='bold', color=COLOR_EMPH)
 
-            # line 131: Success rate label (enlarged to 14)
+            # line 131: Success rate label (enlarged to 14)plt
             ax.text(pos, avgs[j] + 0.5, val_text, ha='center', va='bottom', fontsize=14)
 
             # line 135-144: Splitting legend collectors by group
@@ -153,19 +153,19 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
         # Aesthetics
         ax.set_xticks([])
         # line 147: Enlarged task name font to 14
-        ax.set_xlabel(format_name(name), fontsize=14, labelpad=15, fontweight='medium')
+        ax.set_xlabel(format_name(name), fontsize=14, labelpad=10, fontweight='bold')
 
         # line 151-155: Independent Y-axis limits for each group
         is_single_group = (i < n_single)
         if is_single_group:
             # Single-Task Limit (60-108 to keep it tight)
-            ax.set_ylim(60, 108)
-            ax.set_yticks([60, 80, 100])
-            ax.set_yticklabels(['60', '80', '100'])
+            ax.set_ylim(60, 90)
+            ax.set_yticks([60, 80])
+            ax.set_yticklabels(['60', '80'])
         else:
             # Multi-Task Limit (40-102 to keep it tight)
-            ax.set_ylim(40, 102)
-            ax.set_yticks([40, 60, 80, 100])
+            ax.set_ylim(40, 95)
+            ax.set_yticks([40, 60, 80])
 
         # line 164: Enforcing a wider fixed horizontal range
         ax.set_xlim(-0.7, 0.7)
@@ -181,7 +181,7 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
             # Show Y-axis and label for group heads
             if i == 0:
                 ax.set_ylabel('Success Rate (%)', fontsize=18, fontweight='bold')
-            ax.tick_params(axis='y', which='both', left=True)
+            ax.tick_params(axis='y', which='both', left=True, labelsize=15)
             ax.spines['left'].set_visible(True)
 
         ax.yaxis.grid(True, linestyle='--', color='gray', alpha=0.2, zorder=0)
@@ -198,11 +198,11 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
 
     # lines 170-172: Group captions
     # lines 175-176: Enlarged group captions to 18
-    fig.text((s_start + s_end)/2, 0.12, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
-    fig.text((m_start + m_end)/2, 0.12, 'Multi-Task Evaluation', ha='center', fontsize=18, fontweight="bold", color=COLOR_GROUP_CAPTION)
+    fig.text((s_start + s_end)/2, 0.14, 'Single-Task Evaluation', ha='center', fontsize=18, fontweight="semibold", color=COLOR_GROUP_CAPTION)
+    fig.text((m_start + m_end)/2, 0.14, 'Multi-Task Evaluation', ha='center', fontsize=18, fontweight="semibold", color=COLOR_GROUP_CAPTION)
 
     # lines 178-181: Brackets with curly (tick) ends
-    line_y = 0.155
+    line_y = 0.185
     tick_h = 0.01  # Height of the ends
 
     # Single-Task Bracket
@@ -218,13 +218,13 @@ def create_combined_plot(single_task_files, multi_task_files, output_path):
     # 4. Split Horizontal Legends at Bottom
     # Single-Task Legend
     fig.legend(single_handles, single_labels, loc='lower center',
-               bbox_to_anchor=((s_start + s_end)/2, 0.03), ncol=len(single_labels),
+               bbox_to_anchor=((s_start + s_end)/2, 0.04), ncol=len(single_labels),
                frameon=True, fontsize=16, edgecolor='#CCCCCC',
                handlelength=0.7, handleheight=0.7)
 
     # Multi-Task Legend
     fig.legend(multi_handles, multi_labels, loc='lower center',
-               bbox_to_anchor=((m_start + m_end)/2, 0.03), ncol=len(multi_labels),
+               bbox_to_anchor=((m_start + m_end)/2, 0.04), ncol=len(multi_labels),
                frameon=True, fontsize=16, edgecolor='#CCCCCC',
                handlelength=0.7, handleheight=0.7)
 

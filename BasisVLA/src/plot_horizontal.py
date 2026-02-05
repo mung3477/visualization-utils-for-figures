@@ -80,7 +80,7 @@ def plot_new_object_location_barh(csv_path: str, output_path: str):
     ax.set_ylim(max(y) + 0.69, 0)
 
 
-    ax.set_xlabel("Success Rate (%)", fontsize=15, fontweight="bold")
+    ax.set_xlabel("Success Rate (%)", fontsize=15)
     ax.set_xlim(0, 80)
     ax.margins(x=0) # Remove internal horizontal padding
     ax.xaxis.grid(True, linestyle="--", color="gray", alpha=0.2, zorder=0)
@@ -108,5 +108,5 @@ def plot_new_object_location_barh(csv_path: str, output_path: str):
 if __name__ == "__main__":
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     csv_path = os.path.join(base_dir, "dataset", "tasks", "new-location", "new_object_location.csv")
-    out_path = os.path.join(base_dir, "outputs", "new_object_location_barh.png")
+    out_path = os.path.join(base_dir, "outputs", "new_object_location_barh.pdf")
     plot_new_object_location_barh(csv_path, out_path)

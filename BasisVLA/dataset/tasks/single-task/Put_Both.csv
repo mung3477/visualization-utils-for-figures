@@ -1,0 +1,5 @@
+model,DP,DP + Ours
+seed 8,76,84
+seed 10,80,92
+seed 12,80,84
+average,78.67,86.67
